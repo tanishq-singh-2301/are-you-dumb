@@ -3,8 +3,6 @@
 ## Getting Started
 ---
 
-<b>
-
 ### 1. Using node
 
 ```bash
@@ -17,9 +15,6 @@ npm run build
 # Start the server
 npm run start
 ```
-</b>
-
-<b>
 
 ### 2. Using docker
 
@@ -30,7 +25,6 @@ docker image build -t are-you-dumb .
 # Run the docker container
 docker run -p 3000:3000 are-you-dumb
 ```
-</b>
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 

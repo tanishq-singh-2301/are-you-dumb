@@ -1,5 +1,7 @@
 import X_svg from '@components/cross';
+import Footer from '@components/footer';
 import classNames from '@lib/classNames';
+import randomNumber from '@lib/randomNumber';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { useState } from 'react';
@@ -11,8 +13,8 @@ const Home: NextPage = () => {
   const [numberOfTimesNoBtnPressed, setNumberOfTimesNoBtnPressed] = useState<number>(0);
 
   const no_button: Function = (): void => {
-    const randomX: number = ((Math.random() * 36) + 1) * [-1, 1][Math.floor(Math.random() * 2)]; // random float b/t (-35 to 35)
-    const randomY: number = ((Math.random() * 16) + 1) * [-1, 1][Math.floor(Math.random() * 2)]; // random float b/t (-15 to 15)
+    const randomX: number = randomNumber(35); // random float b/t (-35 to 35)
+    const randomY: number = randomNumber(15); // random float b/t (-15 to 15)
     const noButton: HTMLElement | null = document.getElementById("are_you_dumb");
 
     setNumberOfTimesNoBtnPressed(oldNumber => oldNumber + 1);
@@ -32,7 +34,7 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className='h-full max-w-screen flex justify-start items-center flex-col'>
+    <div className='h-full max-w-screen flex justify-start items-center flex-col relative'>
       <Head>
         <title>Are You Dumb?</title>
         <link rel="icon" href="/dumbbell-gym-svgrepo-com.svg" />
@@ -87,6 +89,8 @@ const Home: NextPage = () => {
           </div>
         </section>
       </main>
+
+      <Footer />
 
     </div >
   );
