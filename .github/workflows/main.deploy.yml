@@ -1,0 +1,71 @@
+name: Deploy to production
+
+on:
+  pull_request:
+    branches:
+      - dev
+
+  push:
+    branches:
+      - main
+
+jobs:
+  nextjs_build:
+    name: Front-End Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+      
+      - name: Installing Packages
+        run: npm install
+
+      - name: Building Application
+        run: npm run build
+
+  frontend_test:
+    needs: [nextjs_build]
+    name: NextJs Unit Test
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-18.04, ubuntu-20.04]
+        node: [12, 14]
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+
+      - name: Cypress run
+        uses: cypress-io/github-action@v2
+        with:
+          build: npm run build
+          start: npm run start
+
+  frontend_deploy:
+    needs: [frontend_test]
+    name: deploy in production
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14.x'
+
+      - name: Set up vercel
+        uses: amondnet/vercel-action@v20
+        with:
+          vercel-token: ${{ secrets.VERCEL_TOKEN }}
+          vercel-args: '--prod'
+          vercel-org-id: ${{ secrets.ORG_ID }}
+          vercel-project-id: ${{ secrets.PROJECT_ID }}
